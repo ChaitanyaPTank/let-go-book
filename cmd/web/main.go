@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/go-playground/form/v4"
 	_ "github.com/go-sql-driver/mysql"
 	"snippetbox.chaitanya.observer/internal/models"
 )
@@ -17,6 +18,7 @@ type application struct {
 	cfg           *Config
 	snippets      *models.SnippetModel
 	templateCache map[string]*template.Template
+	formDecoder   *form.Decoder
 }
 
 type Config struct {
@@ -46,12 +48,14 @@ func main() {
 		logger.Error(err.Error())
 		os.Exit(1)
 	}
+	formDecoder := form.NewDecoder()
 
 	app := &application{
 		logger:        logger,
 		cfg:           &cfg,
 		snippets:      &models.SnippetModel{DB: db}, // instantiate the SnippetModel struct with the positional arguments
 		templateCache: templateCache,
+		formDecoder:   formDecoder,
 	}
 
 	logger.Info("Starting server", slog.String("addr", cfg.address))
