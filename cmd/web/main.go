@@ -21,6 +21,7 @@ type application struct {
 	logger         *slog.Logger
 	cfg            *Config
 	snippets       *models.SnippetModel
+	users          *models.UserModel
 	templateCache  map[string]*template.Template
 	formDecoder    *form.Decoder
 	sessionManager *scs.SessionManager
@@ -63,6 +64,7 @@ func main() {
 		logger:         logger,
 		cfg:            &cfg,
 		snippets:       &models.SnippetModel{DB: db}, // instantiate the SnippetModel struct with the positional arguments
+		users:          &models.UserModel{DB: db},
 		templateCache:  templateCache,
 		formDecoder:    formDecoder,
 		sessionManager: sessionManager,
